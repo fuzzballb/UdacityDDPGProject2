@@ -4,30 +4,32 @@
 /////////////////////////////////////////
 
 
-# Udacity Reinforcement Learning Project1
+# Udacity Reinforcement Learning Project2
 
 
 
 ## Introduction 
 
-This is the first project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment for Deep Q network. The goal of this environment is to collect all the yellow bananas and not touch the blue ones. The environment provides ray casts which return the distance to the floor, bananas and walls. The resulting vector is passed to the Jupyter Notebook as a state.
+This is the second project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment with DDPG. The goal of this environment is for the robot arm to follow the green ball. The environment provides position and angles of the joints. The resulting vector is passed to the Jupyter Notebook as a state.
 
 ```python
 Number of agents: 1
 Number of actions: 4
-States look like: [1.         0.         0.         0.         0.84408134 0.
- 0.         1.         0.         0.0748472  0.         1.
- 0.         0.         0.25755    1.         0.         0.
- 0.         0.74177343 0.         1.         0.         0.
- 0.25854847 0.         0.         1.         0.         0.09355672
- 0.         1.         0.         0.         0.31969345 0.
- 0.        ]
-States have length: 37
+States look like: [  0.00000000e+00  -4.00000000e+00   0.00000000e+00   1.00000000e+00
+  -0.00000000e+00  -0.00000000e+00  -4.37113883e-08   0.00000000e+00
+   0.00000000e+00   0.00000000e+00   0.00000000e+00   0.00000000e+00
+   0.00000000e+00   0.00000000e+00  -1.00000000e+01   0.00000000e+00
+   1.00000000e+00  -0.00000000e+00  -0.00000000e+00  -4.37113883e-08
+   0.00000000e+00   0.00000000e+00   0.00000000e+00   0.00000000e+00
+   0.00000000e+00   0.00000000e+00   5.75471878e+00  -1.00000000e+00
+   5.55726671e+00   0.00000000e+00   1.00000000e+00   0.00000000e+00
+  -1.68164849e-01]
+States have length: 33
 ```
 
 The agent tries to find the action with the most future cumulative reward, and thus trains the deep Neural network to predict the best action, given a random state.
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/fbF0UsxEx5Y/0.jpg)](https://www.youtube.com/watch?v=fbF0UsxEx5Y). 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/c-2tIOe-1K4/0.jpg)](https://www.youtube.com/watch?v=c-2tIOe-1K4). 
 
 *Training in progress*
 
@@ -60,22 +62,54 @@ for brain_name in list(vector_action.keys()) + list(memory.keys()) + list(text_a
 AttributeError: 'numpy.int64' object has no attribute 'keys'
 ```
 
-Here i had to change 'action' (numpy.int64) to an int32 by using 'action.astype(int)'
-
-```Python
-# 2. do the step in the actual environment, and recieve a next state and reward
-env_info = env.step(action.astype(int))[brain_name]        # send the action to the environment
-```
-
 When all dependencies and issues are resolved, the training can begin.
 
 ## Training the agent with code provided by the course
 
-To start, and make sure the environment works, I have used the DQN_agent that came with the workspace solution for DQN networks. My first training result took a while before eventually capping with an average score of around 15.x.
+To start, and make sure the environment works, I have used the DDPG example that was referred to by the training video. My first training result was just using the defaults from the example, and didn't perform at all. I rewread the paper but had to see what other students where encountered, before getting better results. 
 
+
+{Update image with initial training results}
 ![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_995.PNG "Training with default epsilon decay")
 
-I figured that it didn't explore the random paths enough, because the Eps_decay was quite high, at 0.995. Meaning that the amound of randomness over time diminished quite fast, making the agent stick to what it already knows 
+
+## Solutions for getting a better score
+
+I found a few possible issues with using the default solution and tried them one by one.
+
+1. reduce noise
+
+The noise that is added to the training was to much so i reduced the sigma from 0.2 to 0.1. This alone did not do a lot for the training results
+
+2. increase episode length
+
+Next i found that the agent probely needed more time to get to it's goal then de maximum episode length that i specified. Thus the agent rarely got to it's goal. and if it dit, it was because it was aleady close. This was the first time the score excided 1.0. Unfortunately it got stuk at around 2.x. not nearly the 30 i needed
+
+3. Normalize 
+
+By defining batch normalisation and adding it to the forward pass
+
+still around the 2.x once finished check if removing this matters
+
+4. Increase replay buffer size
+
+[GPU] helped get above 3.x
+
+5. resetting the agent after every
+
+[LOCAL example] agent.reset() helped get above 3.x in the first 100 episodes without the 4. increased buffer size
+ 
+6. clip local gradients
+
+        # ---------------------------- update critic ---------------------------- #
+        ...
+        torch.nn.utils.clip_grad_norm_(self.critic_local.parameters(), 1) # clip of local gradients of critic
+
+
+///////////////////////////////
+TOT HIER GEKOMEN
+/////////////////////////////
+
 
 After changing the Eps_decay to 0.905 the initial "Average score" went up a lot faster, and almost reached 16.5 within 1300 episodes
 
