@@ -99,7 +99,20 @@ still around the 2.x once finished check if removing this matters
 
 [LOCAL example] agent.reset() helped get above 3.x in the first 100 episodes without the 4. increased buffer size
  
-6. clip local gradients
+6. 
+
+issues with learning more then 500 episodes connection gets lost
+
+Reloading saved wights didn't work, probebly because i didn't save and reload the target networks of the actor and critic
+
+7. increasing learning rate 
+
+if the steps in learning are to small, it can take a long time before the optimal value is found
+
+
+
+
+x. clip local gradients
 
         # ---------------------------- update critic ---------------------------- #
         ...
