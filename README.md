@@ -10,7 +10,7 @@
 
 ## Introduction 
 
-This is the second project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment with DDPG. The goal of this environment is for the robot arm to follow the green ball. The environment provides position and angles of the joints. The resulting vector is passed to the Jupyter Notebook as a state.
+This is the second project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment with DDPG (Deep Deterministic Policy Gradient). The goal of this environment is for the robot arm to follow the green ball. The environment provides position and angles of the joints. The resulting vector is passed to the Jupyter Notebook as a state.
 
 ```python
 Number of agents: 1
@@ -97,15 +97,52 @@ still around the 2.x once finished check if removing this matters
 
 5. resetting the agent after every
 
-[LOCAL example] agent.reset() helped get above 3.x in the first 100 episodes without the 4. increased buffer size
+[LOCAL example] agent.reset() helped get above 3.x in the first 100 episodes without the previous increased buffer size step
  
-6. 
+6. learinig for >500 episodes
 
-issues with learning more then 500 episodes connection gets lost
+When learning for more then 500 episodes connection with the Udacity environment gets lost.  
 
-Reloading saved wights didn't work, probebly because i didn't save and reload the target networks of the actor and critic
+Reloading saved wights to continue learning didn't work, probebly because i didn't save and reload the *target* networks of the actor and critic.
 
 7. increasing learning rate 
 
-if the steps in learning are to small, it can take a long time before the optimal value is found
+if the steps in learning are to small, it can take a long time before the optimal value is found, make it to big, and you will overshoot your optimal value 
+
+## Learning Algorithm
+
+1. First we initialize the agent in the Navigation notebook
+
+Navigation.ipynb
+
+'''
+# initialise an agent
+agent = Agent(state_size=33, action_size=4, random_seed=2)
+'''
+
+2. This sets the state and action size for the agent and creates an Actor, and a Critic neural net, with corresponding target network. 
+
+'''
+        # Actor Network (w/ Target Network)
+        self.actor_local = Actor(state_size, action_size, random_seed).to(device)
+        self.actor_target = Actor(state_size, action_size, random_seed).to(device)
+        self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=LR_ACTOR)
+
+        # Critic Network (w/ Target Network)
+        self.critic_local = Critic(state_size, action_size, random_seed).to(device)
+        self.critic_target = Critic(state_size, action_size, random_seed).to(device)
+        self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
+'''
+
+The critic network takes actions and states and produces a Q value. This is compaired to the actual value in the environment, the difference between expected Q and actual reward from the environment is used to calculate a loss, which it tries to minimize. When the critic starts giving estimates about the Q value given states and actions, the actor network can use these trained values, to train the best action for a given state. 
+
+The target networks are there to train more gradually, because every step only a small potion of the differnace of the weights is copied from the source to the target network.
+
+for a more detailed explination see the video below 
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=452). 
+
+
+
+
 
