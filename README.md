@@ -33,6 +33,11 @@ The agent tries to find the action with the most future cumulative reward, and t
 
 *Training in progress*
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/sxyRiDX6dzE/0.jpg)](https://www.youtube.com/watch?v=sxyRiDX6dzE)
+
+*Trained robot arm*
+
+
 ## Setup the environment in Windows 10
 
 As with most machine learning projects, its best to start with setting up a virtual environment. This way the packages that need to be imported, don't conflict with Python packages that are already installed. For this project i used the Anaconda environment based on Python 3.6. 
