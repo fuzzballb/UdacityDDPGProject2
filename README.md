@@ -140,7 +140,7 @@ The target networks are there to train more gradually, because every step only a
 
 for a more detailed explination see the video below 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=452). 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
 
 
 
