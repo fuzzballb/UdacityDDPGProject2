@@ -122,6 +122,8 @@ agent = Agent(state_size=33, action_size=4, random_seed=2)
 
 2. This sets the state and action size for the agent and creates an Actor, and a Critic neural net, with corresponding target network. 
 
+   *ddpg_agent.ipynb*
+
 ```Python
         # Actor Network (w/ Target Network)
         self.actor_local = Actor(state_size, action_size, random_seed).to(device)
@@ -143,6 +145,51 @@ for a more detailed explination see the video below
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
 
 
+3. Adding noise to increase exploration instead of only exploiting the paths that have lead to success
+
+   *ddpg_agent.ipynb*
+
+```Python
+        # Noise process
+        self.noise = OUNoise(action_size, random_seed)
+```
+
+Here we define noise that will be added to the action that is obtained from from the actor network.
+
+
+4. Replay buffer, to store past experences
+
+   *ddpg_agent.ipynb*
+
+```Python
+        # Replay memory
+        self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
+```
+
+Becasue DDPG is a off policy algorithm (see bottom of the page), just like Q learning. It can learn from past experiences that are stored in the replay buffer. 
 
 
 
+
+
+
+
+
+
+## on policy vs off policy
+
+The on-policy aggression is like SARSA, they assume that their experience comes from the agents himself, and they try to improve agents policy right down this online stop. So, the agent plays and then it improves and plays again. And what you want to do is you want to get optimal Strategies as quickly as possible. 
+
+Off-policy algorithms like Q-learning, as an example, they have slightly relax situation. They don't assume that the sessions you're obtained, you're training on, are the ones that you're going to use when the agent is going to finally get kind of unchained and applied to the actual problem. Because of this, it can use data from an experiance replay buffer 
+
+
+
+## Model based vs model free 
+
+Model-based reinforcement learning has an agent try to understand the world and create a model to represent it. Here the model is trying to capture 2 functions, the transition function from states $T$ and the reward function $R$. From this model, the agent has a reference and can plan accordingly.
+
+However, it is not necessary to learn a model, and the agent can instead learn a policy directly using algorithms like Q-learning or policy gradient.
+
+A simple check to see if an RL algorithm is model-based or model-free is:
+
+If, after learning, the agent can make predictions about what the next state and reward will be before it takes each action, it's a model-based RL algorithm.
