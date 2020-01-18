@@ -113,16 +113,16 @@ if the steps in learning are to small, it can take a long time before the optima
 
 1. First we initialize the agent in the Navigation notebook
 
-Navigation.ipynb
+   *Navigation.ipynb*
 
-'''
+```Python
 # initialise an agent
 agent = Agent(state_size=33, action_size=4, random_seed=2)
-'''
+```
 
 2. This sets the state and action size for the agent and creates an Actor, and a Critic neural net, with corresponding target network. 
 
-'''
+```Python
         # Actor Network (w/ Target Network)
         self.actor_local = Actor(state_size, action_size, random_seed).to(device)
         self.actor_target = Actor(state_size, action_size, random_seed).to(device)
@@ -132,7 +132,7 @@ agent = Agent(state_size=33, action_size=4, random_seed=2)
         self.critic_local = Critic(state_size, action_size, random_seed).to(device)
         self.critic_target = Critic(state_size, action_size, random_seed).to(device)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
-'''
+```
 
 The critic network takes actions and states and produces a Q value. This is compaired to the actual value in the environment, the difference between expected Q and actual reward from the environment is used to calculate a loss, which it tries to minimize. When the critic starts giving estimates about the Q value given states and actions, the actor network can use these trained values, to train the best action for a given state. 
 
