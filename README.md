@@ -73,9 +73,7 @@ When all dependencies and issues are resolved, the training can begin.
 
 To start, and make sure the environment works, I have used the DDPG example that was referred to by the training video. My first training result was just using the defaults from the example, and didn't perform at all. I rewread the paper but had to see what other students where encountered, before getting better results. 
 
-
-{Update image with initial training results}
-![alt text](https://github.com/fuzzballb/UdacityRFlearningProject1/blob/master/images/Eps_decay_0_995.PNG "Training with default epsilon decay")
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FailedToLearn.PNG "Training with default epsilon decay")
 
 
 ## Solutions for getting a better score
@@ -86,9 +84,15 @@ I found a few possible issues with using the default solution and tried them one
 
 The noise that is added to the training was to much so i reduced the sigma from 0.2 to 0.1. This alone did not do a lot for the training results
 
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result1.PNG "Changed sigma")
+
+
 2. increase episode length
 
 Next i found that the agent probely needed more time to get to it's goal then de maximum episode length that i specified. Thus the agent rarely got to it's goal. and if it dit, it was because it was aleady close. This was the first time the score excided 1.0. Unfortunately it got stuk at around 2.x. not nearly the 30 i needed
+
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result2.PNG "Changed episode length")
+
 
 3. Normalize 
 
@@ -96,9 +100,12 @@ By defining batch normalisation and adding it to the forward pass
 
 still around the 2.x once finished check if removing this matters
 
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result3.PNG "Normalisation")
+
 4. Increase replay buffer size
 
 [GPU] helped get above 3.x
+
 
 5. resetting the agent after every
 
@@ -109,10 +116,13 @@ still around the 2.x once finished check if removing this matters
 When learning for more then 500 episodes connection with the Udacity environment gets lost.  
 
 Reloading saved wights to continue learning didn't work, probebly because i didn't save and reload the *target* networks of the actor and critic.
-
+ 
 7. increasing learning rate 
 
 if the steps in learning are to small, it can take a long time before the optimal value is found, make it to big, and you will overshoot your optimal value 
+
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result6.PNG "Learning rate")
+
 
 ## Learning Algorithm
 
