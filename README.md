@@ -80,21 +80,21 @@ To start, and make sure the environment works, I have used the DDPG example that
 
 I found a few possible issues with using the default solution and tried them one by one.
 
-1. reduce noise
+**1. reduce noise**
 
 The noise that is added to the training was to much so i reduced the sigma from 0.2 to 0.1. This alone did not do a lot for the training results
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result1.PNG "Changed sigma")
 
 
-2. increase episode length
+**2. increase episode length**
 
 Next i found that the agent probely needed more time to get to it's goal then de maximum episode length that i specified. Thus the agent rarely got to it's goal. and if it dit, it was because it was aleady close. This was the first time the score excided 1.0. Unfortunately it got stuk at around 2.x. not nearly the 30 i needed
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result2.PNG "Changed episode length")
 
 
-3. Normalize 
+**3. Normalize**
 
 By defining batch normalisation and adding it to the forward pass
 
@@ -102,17 +102,17 @@ still around the 2.x once finished check if removing this matters
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result3.PNG "Normalisation")
 
-4. Increase replay buffer size
+**4. Increase replay buffer size**
 
 [GPU] helped get above 3.x
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result5.PNG "Increase replay buffer")
 
-5. resetting the agent after every
+**5. resetting the agent after every**
 
 [LOCAL example] agent.reset() helped get above 3.x in the first 100 episodes without the previous increased buffer size step
  
-6. learinig for >500 episodes
+**6. learinig for >500 episodes**
 
 When learning for more then 500 episodes connection with the Udacity environment gets lost.  
 
@@ -120,7 +120,7 @@ When learning for more then 500 episodes connection with the Udacity environment
 
 *Reloading saved wights to continue learning didn't work, probebly because i didn't save and reload the *target* networks of the actor and critic.*
 
-7. increasing learning rate 
+**7. increasing learning rate** 
 
 if the steps in learning are to small, it can take a long time before the optimal value is found, make it to big, and you will overshoot your optimal value 
 
