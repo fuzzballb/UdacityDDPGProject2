@@ -131,18 +131,18 @@ When the steps in learning are to small, it can take a long time before the opti
 
 ## Learning Algorithm
 
-1. First we initialize the agent in the Navigation notebook
+**1. First we initialize the agent in the Navigation notebook**
 
-   *Navigation.ipynb*
+*Navigation.ipynb*
 
 ```Python
 # initialise an agent
 agent = Agent(state_size=33, action_size=4, random_seed=2)
 ```
 
-2. This sets the state and action size for the agent and creates an Actor, and a Critic neural net, with corresponding target network. 
+**2. This sets the state and action size for the agent and creates an Actor, and a Critic neural net, with corresponding target network.** 
 
-   *ddpg_agent.ipynb*
+*ddpg_agent.ipynb*
 
 ```Python
         # Actor Network (w/ Target Network)
@@ -165,9 +165,9 @@ for a more detailed explination see the video below
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
 
 
-3. Adding noise to increase exploration instead of only exploiting the paths that have lead to success
+**3. Adding noise to increase exploration instead of only exploiting the paths that have lead to success**
 
-   *ddpg_agent.ipynb*
+*ddpg_agent.ipynb*
 
 ```Python
         # Noise process
@@ -177,9 +177,9 @@ for a more detailed explination see the video below
 Here we define noise that will be added to the action that is obtained from from the actor network.
 
 
-4. Replay buffer, to store past experences
+**4. Replay buffer, to store past experences**
 
-   *ddpg_agent.ipynb*
+*ddpg_agent.ipynb*
 
 ```Python
         # Replay memory
