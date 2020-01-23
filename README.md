@@ -106,6 +106,7 @@ still around the 2.x once finished check if removing this matters
 
 [GPU] helped get above 3.x
 
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result5.PNG "Increase replay buffer")
 
 5. resetting the agent after every
 
@@ -115,8 +116,10 @@ still around the 2.x once finished check if removing this matters
 
 When learning for more then 500 episodes connection with the Udacity environment gets lost.  
 
-Reloading saved wights to continue learning didn't work, probebly because i didn't save and reload the *target* networks of the actor and critic.
- 
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result4.PNG "More then 500 episodes")
+
+*Reloading saved wights to continue learning didn't work, probebly because i didn't save and reload the *target* networks of the actor and critic.*
+
 7. increasing learning rate 
 
 if the steps in learning are to small, it can take a long time before the optimal value is found, make it to big, and you will overshoot your optimal value 
