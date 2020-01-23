@@ -1,6 +1,6 @@
 
 //////////////////////////////////////////
-/// Work in progress this is a Readme from an other project i am usign as a template
+/// Work in progress updating algorithm explanation
 /////////////////////////////////////////
 
 
