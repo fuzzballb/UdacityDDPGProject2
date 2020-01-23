@@ -98,19 +98,21 @@ Next i found that the agent probely needed more time to get to it's goal then de
 
 By defining batch normalisation and adding it to the forward pass
 
-still around the 2.x once finished check if removing this matters
+Still around the 2.x once finished check if removing this matters
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result3.PNG "Normalisation")
 
 **4. Increase replay buffer size**
 
-[GPU] helped get above 3.x
+Helped get above 3.x
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result5.PNG "Increase replay buffer")
 
 **5. resetting the agent after every**
 
-[LOCAL example] agent.reset() helped get above 3.x in the first 100 episodes without the previous increased buffer size step
+Agent.reset() helped get above 3.x in the first 100 episodes without the previous increased buffer size step
+ 
+*No mayor change in learning*
  
 **6. learinig for >500 episodes**
 
@@ -122,7 +124,7 @@ When learning for more then 500 episodes connection with the Udacity environment
 
 **7. increasing learning rate** 
 
-if the steps in learning are to small, it can take a long time before the optimal value is found, make it to big, and you will overshoot your optimal value 
+When the steps in learning are to small, it can take a long time before the optimal value is found, make it to big, and you will overshoot your optimal value 
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result6.PNG "Learning rate")
 
