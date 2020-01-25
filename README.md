@@ -5,7 +5,7 @@
 
 ## Introduction 
 
-This is the second project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment with DDPG (Deep Deterministic Policy Gradient). The goal of this environment is for the robot arm to follow the green ball. The environment provides position and angles of the joints. The resulting vector is passed to the Jupyter Notebook as a state.
+This is the second project of the Udacity Deep Reinforcement Learning course. In this project Udacity provides a Unity3D application that is used as a training environment with DDPG (Deep Deterministic Policy Gradient). The goal of this environment is for the robot arm to follow the green ball. The environment provides position and angles of the joints. The resulting vector is passed to the Jupiter Notebook as a state.
 
 ```python
 Number of agents: 1
@@ -35,9 +35,9 @@ The agent tries to find the action with the most future cumulative reward, and t
 
 ## Setup the environment in Windows 10
 
-As with most machine learning projects, its best to start with setting up a virtual environment. This way the packages that need to be imported, don't conflict with Python packages that are already installed. For this project i used the Anaconda environment based on Python 3.6. 
+As with most machine learning projects, its best to start with setting up a virtual environment. This way the packages that need to be imported, don't conflict with Python packages that are already installed. For this project I used the Anaconda environment based on Python 3.6. 
 
-While the example project provides a requirements.txt, i ren into this error while adding the required packages to your project
+While the example project provides a requirements.txt, I ren into this error while adding the required packages to your project
 
 ```python
 !pip -q install ./
@@ -45,7 +45,7 @@ ERROR: Could not find a version that satisfies the requirement torch==0.4.0 (fro
 ERROR: No matching distribution found for torch==0.4.0 (from unityagents==0.4.0)
 ```
 
-The solution, is to install a downloaded wheel file form the PyTourch website yourself. I downloaded "torch-0.4.1-cp36-cp36m-win_amd64.whl" from the PyTourch site https://pytorch.org/get-started/previous-versions/
+The solution, is to install a downloaded wheel file form the PyTorch website yourself. I downloaded "torch-0.4.1-cp36-cp36m-win_amd64.whl" from the PyTorch site https://pytorch.org/get-started/previous-versions/
 
 ```
 (UdacityRLProject1) C:\Clients\Udacity\deep-reinforcement-learning\[your project folder]>pip install torch-0.4.1-cp36-cp36m-win_amd64.whl
@@ -66,7 +66,7 @@ When all dependencies and issues are resolved, the training can begin.
 
 ## Training the agent with code provided by the course
 
-To start, and make sure the environment works, I have used the DDPG example that was referred to by the training video. My first training result was just using the defaults from the example, and didn't perform at all. I rewread the paper but had to see what other students where encountered, before getting better results. 
+To start, and make sure the environment works, I have used the DDPG example that was referred to by the training video. My first training result was just using the defaults from the example, and didn't perform at all. I re read the paper but had to see what other students where encountered, before getting better results. 
 
 ![Training with default epsilon decay](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FailedToLearn.PNG "Training with default epsilon decay")
 
@@ -84,7 +84,7 @@ The noise that is added to the training was to much so i reduced the sigma from 
 
 **2. increase episode length**
 
-Next i found that the agent probely needed more time to get to it's goal then de maximum episode length that i specified. Thus the agent rarely got to it's goal. and if it dit, it was because it was aleady close. This was the first time the score excided 1.0. Unfortunately it got stuk at around 2.x. not nearly the 30 i needed
+Next I found that the agent probaly needed more time to get to it's goal then de maximum episode length that A specified. Thus the agent rarely got to it's goal. and if it did, it was because it was already close. This was the first time the score excided 1.0. Unfortunately it got stuck at around 2.x. not nearly the 30 i needed
 
 ![Changed episode length](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result2.PNG "Changed episode length")
 
@@ -109,13 +109,13 @@ Agent.reset() helped get above 3.x in the first 100 episodes even without the pr
  
 *No mayor change in learning*
  
-**6. learinig for more then 500 episodes**
+**6. learninig for more then 500 episodes**
 
 When trying to learn for more then 500 episodes connection with the Udacity environment gets lost.  
 
 ![More then 500 episodes](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result4.PNG "More then 500 episodes")
 
-*Reloading saved wights to continue learning didn't work, probebly because i didn't save and reload the *target* networks of the actor and critic.*
+*Reloading saved weights to continue learning didn't work, probably because I didn't save and reload the *target* networks of the actor and critic.*
 
 **7. increasing learning rate** 
 
@@ -151,7 +151,7 @@ agent = Agent(state_size=33, action_size=4, random_seed=2)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
 ```
 
-DDPG is a algoritm that requires a actor and critic network. Both of these network also have target networks, that get small updates from the local network. This way the values don't change to much over a short time, and learning becomes more stable.
+DDPG is a algorithm that requires a actor and critic network. Both of these network also have target networks, that get small updates from the local network. This way the values don't change to much over a short time, and learning becomes more stable.
 
 
 **3. Adding noise to increase exploration instead of only exploiting the paths that have lead to success**
@@ -163,10 +163,10 @@ DDPG is a algoritm that requires a actor and critic network. Both of these netwo
         self.noise = OUNoise(action_size, random_seed)
 ```
 
-Here we define noise that will be added to the action that is obtained from from the actor network.
+Here we define noise that will be added to the action that is obtained from the actor network.
 
 
-**4. Replay buffer, to store past experences**
+**4. Replay buffer, to store past experiences**
 
 *ddpg_agent.ipynb*
 
@@ -175,14 +175,14 @@ Here we define noise that will be added to the action that is obtained from from
         self.memory = ReplayBuffer(action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
 ```
 
-Becasue DDPG is a off policy algorithm (see bottom of the page), just like Q learning. It can learn from past experiences that are stored in the replay buffer. 
+Because DDPG is a off policy algorithm (see bottom of the page), just like Q learning. It can learn from past experiences that are stored in the replay buffer. 
 
 
 **5. Learn**
 
-The critic network takes actions and states and produces a Q value. This is compaired to the actual value in the environment, the difference between expected Q and actual reward from the environment is used to calculate a loss, which it tries to minimize. When the critic starts giving estimates about the Q value given states and actions, the actor network can use these trained values, to train the best action for a given state. 
+The critic network takes actions and states and produces a Q value. This is compared to the actual value in the environment, the difference between expected Q and actual reward from the environment is used to calculate a loss, which it tries to minimize. When the critic starts giving estimates about the Q value given states and actions, the actor network can use these trained values, to train the best action for a given state. 
 
-for a more detailed explination see the video below 
+for a more detailed explanation see the video below 
 
 [![Youtube lecture about DDPG](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
 
@@ -268,7 +268,7 @@ Because in training we try to minimize the loss, we take the negative of the Q v
 
 The on-policy aggression is like SARSA, they assume that their experience comes from the agents himself, and they try to improve agents policy right down this online stop. So, the agent plays and then it improves and plays again. And what you want to do is you want to get optimal Strategies as quickly as possible. 
 
-Off-policy algorithms like Q-learning, as an example, they have slightly relax situation. They don't assume that the sessions you're obtained, you're training on, are the ones that you're going to use when the agent is going to finally get kind of unchained and applied to the actual problem. Because of this, it can use data from an experiance replay buffer 
+Off-policy algorithms like Q-learning, as an example, they have slightly relax situation. They don't assume that the sessions you're obtained, you're training on, are the ones that you're going to use when the agent is going to finally get kind of unchained and applied to the actual problem. Because of this, it can use data from an experience replay buffer 
 
 
 
