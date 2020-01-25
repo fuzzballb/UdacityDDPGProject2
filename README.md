@@ -98,7 +98,7 @@ Next i found that the agent probely needed more time to get to it's goal then de
 
 By defining batch normalisation and adding it to the forward pass
 
-Still around the 2.x once finished check if removing this matters
+Still around the 2.x and not increasing.
 
 ![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result3.PNG "Normalisation")
 
@@ -156,13 +156,7 @@ agent = Agent(state_size=33, action_size=4, random_seed=2)
         self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=LR_CRITIC, weight_decay=WEIGHT_DECAY)
 ```
 
-The critic network takes actions and states and produces a Q value. This is compaired to the actual value in the environment, the difference between expected Q and actual reward from the environment is used to calculate a loss, which it tries to minimize. When the critic starts giving estimates about the Q value given states and actions, the actor network can use these trained values, to train the best action for a given state. 
-
-The target networks are there to train more gradually, because every step only a small potion of the differnace of the weights is copied from the source to the target network.
-
-for a more detailed explination see the video below 
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
+DDPG is a algoritm that requires a actor and critic network. Both of these network also have target networks, that get small updates from the local network. This way the values don't change to much over a short time, and learning becomes more stable.
 
 
 **3. Adding noise to increase exploration instead of only exploiting the paths that have lead to success**
@@ -189,9 +183,90 @@ Here we define noise that will be added to the action that is obtained from from
 Becasue DDPG is a off policy algorithm (see bottom of the page), just like Q learning. It can learn from past experiences that are stored in the replay buffer. 
 
 
+**5. Learn**
+
+The critic network takes actions and states and produces a Q value. This is compaired to the actual value in the environment, the difference between expected Q and actual reward from the environment is used to calculate a loss, which it tries to minimize. When the critic starts giving estimates about the Q value given states and actions, the actor network can use these trained values, to train the best action for a given state. 
+
+for a more detailed explination see the video below 
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
 
 
 
+First, we get the next states from the stored experiences 
+
+```Python
+        states, actions, rewards, next_states, dones = experiences
+```
+
+Using these next_states we ask the actor network to predict the next actions
+
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.PNG "Actor")
+
+ 
+```Python
+        # ---------------------------- update critic ---------------------------- #
+        # Get predicted next-state actions and Q values from target models
+        actions_next = self.actor_target(next_states)
+```
+
+Then we use these next actions to get the predicted Q targets using the Critic network 
+
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/HalfCritic.PNG "Half Critic")
+ 
+```Python       
+        Q_targets_next = self.critic_target(next_states, actions_next)
+```
+
+
+Using the rewards and the dones from the experiences that came out of the replay buffer, plus the next Q targets (Q_targets_next) we just obtained we can calculate the target Q values (Q_targets).
+
+```Python       
+        # Compute Q targets for current states (y_i)
+        Q_targets = rewards + (gamma * Q_targets_next * (1 - dones))
+ ```       
+ 
+Then we check if we get the same Q values,  if we just add the states and actions to the local Critic network. 
+
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FullCritic.PNG "Full Critic")
+
+```Python        
+        # Compute critic loss
+        Q_expected = self.critic_local(states, actions)
+```       
+ 
+If there is a difference, we change the weights of the local critic network to give results that are closer to the calculated Q values (Q_targets)
+
+  ```Python        
+        critic_loss = F.mse_loss(Q_expected, Q_targets)
+        # Minimize the loss
+        self.critic_optimizer.zero_grad()
+        critic_loss.backward()
+        self.critic_optimizer.step()
+```
+When the Critic network is getting better at producing the Q values (using given states and actions as input), because it has been training on values gained from experiences. It starts giving the right Q values, even if it wouldn’t have the recorded experiences anymore.
+
+At this point we can use the Critic’s learned states, actions to Q values relationship to train the Actor. We use the states from the replay memory as input for the Actor network to find the best action
+ 
+[actor image] 
+ 
+```Python
+        # ---------------------------- update actor ---------------------------- #
+        # Compute actor loss
+        actions_pred = self.actor_local(states)
+```
+
+Then we check with the trained Critic network what the Q values are and take the mean. If these Q values are high, then the Actor network made a good prediction. 
+
+Because in training we try to minimize the loss, we take the negative of the Q values, because less is better 
+
+```Python
+        actor_loss = -self.critic_local(states, actions_pred).mean()
+        # Minimize the loss
+        self.actor_optimizer.zero_grad()
+        actor_loss.backward()
+        self.actor_optimizer.step()
+```
 
 
 
