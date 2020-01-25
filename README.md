@@ -1,9 +1,4 @@
 
-//////////////////////////////////////////
-/// Work in progress updating algorithm explanation
-/////////////////////////////////////////
-
-
 # Udacity Reinforcement Learning Project2
 
 
@@ -29,11 +24,11 @@ States have length: 33
 
 The agent tries to find the action with the most future cumulative reward, and thus trains the deep Neural network to predict the best action, given a random state.
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/c-2tIOe-1K4/0.jpg)](https://www.youtube.com/watch?v=c-2tIOe-1K4). 
+[![Training Youtube video](https://img.youtube.com/vi/c-2tIOe-1K4/0.jpg)](https://www.youtube.com/watch?v=c-2tIOe-1K4). 
 
-*Training in progress*
+*Training in progress not wasting any GPU cycles on rendering a full size image*
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/sxyRiDX6dzE/0.jpg)](https://www.youtube.com/watch?v=sxyRiDX6dzE)
+[![Playing Youtube video](https://img.youtube.com/vi/sxyRiDX6dzE/0.jpg)](https://www.youtube.com/watch?v=sxyRiDX6dzE)
 
 *Trained robot arm*
 
@@ -73,7 +68,7 @@ When all dependencies and issues are resolved, the training can begin.
 
 To start, and make sure the environment works, I have used the DDPG example that was referred to by the training video. My first training result was just using the defaults from the example, and didn't perform at all. I rewread the paper but had to see what other students where encountered, before getting better results. 
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FailedToLearn.PNG "Training with default epsilon decay")
+![Training with default epsilon decay](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FailedToLearn.PNG "Training with default epsilon decay")
 
 
 ## Solutions for getting a better score
@@ -84,14 +79,14 @@ I found a few possible issues with using the default solution and tried them one
 
 The noise that is added to the training was to much so i reduced the sigma from 0.2 to 0.1. This alone did not do a lot for the training results
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result1.PNG "Changed sigma")
+![Changed sigma](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result1.PNG "Changed sigma")
 
 
 **2. increase episode length**
 
 Next i found that the agent probely needed more time to get to it's goal then de maximum episode length that i specified. Thus the agent rarely got to it's goal. and if it dit, it was because it was aleady close. This was the first time the score excided 1.0. Unfortunately it got stuk at around 2.x. not nearly the 30 i needed
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result2.PNG "Changed episode length")
+![Changed episode length](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result2.PNG "Changed episode length")
 
 
 **3. Normalize**
@@ -100,13 +95,13 @@ By defining batch normalisation and adding it to the forward pass
 
 Still around the 2.x and not increasing.
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result3.PNG "Normalisation")
+![Normalisation](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result3.PNG "Normalisation")
 
 **4. Increase replay buffer size**
 
 Helped get above 3.x in the first step, but the learning didn't increase enough over time
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result5.PNG "Increase replay buffer")
+![Increase replay buffer size](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result5.PNG "Increase replay buffer size")
 
 **5. resetting the agent after every**
 
@@ -118,7 +113,7 @@ Agent.reset() helped get above 3.x in the first 100 episodes even without the pr
 
 When trying to learn for more then 500 episodes connection with the Udacity environment gets lost.  
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result4.PNG "More then 500 episodes")
+![More then 500 episodes](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result4.PNG "More then 500 episodes")
 
 *Reloading saved wights to continue learning didn't work, probebly because i didn't save and reload the *target* networks of the actor and critic.*
 
@@ -126,7 +121,7 @@ When trying to learn for more then 500 episodes connection with the Udacity envi
 
 When the steps in learning are to small, it can take a long time before the optimal value is found, make it to big, and you will overshoot your optimal value.
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result6.PNG "Learning rate")
+![Learning rate](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Result6.PNG "Learning rate")
 
 
 ## Learning Algorithm
@@ -189,7 +184,7 @@ The critic network takes actions and states and produces a Q value. This is comp
 
 for a more detailed explination see the video below 
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
+[![Youtube lecture about DDPG](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
 
 
 
@@ -201,7 +196,7 @@ First, we get the next states from the stored experiences
 
 Using these next_states we ask the actor network to predict the next actions
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.png "Actor")
+![Actor network](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.png "Actor network")
 
  
 ```Python
@@ -212,7 +207,7 @@ Using these next_states we ask the actor network to predict the next actions
 
 Then we use these next actions to get the predicted Q targets using the Critic network 
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/HalfCritic.png "Half Critic")
+![Half Critic network](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/HalfCritic.png "Half Critic network")
 
 ```Python       
         Q_targets_next = self.critic_target(next_states, actions_next)
@@ -228,7 +223,7 @@ Using the rewards and the dones from the experiences that came out of the replay
  
 Then we check if we get the same Q values,  if we just add the states and actions to the local Critic network. 
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FullCritic.png "Full Critic")
+![Full Critic network](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FullCritic.png "Full Critic network")
 
 ```Python        
         # Compute critic loss
@@ -248,7 +243,7 @@ When the Critic network is getting better at producing the Q values (using given
 
 At this point we can use the Critic’s learned states, actions to Q values relationship to train the Actor. We use the states from the replay memory as input for the Actor network to find the best action
  
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.png "Actor")
+![Actor network](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.png "Actor network")
  
 ```Python
         # ---------------------------- update actor ---------------------------- #
@@ -267,8 +262,6 @@ Because in training we try to minimize the loss, we take the negative of the Q v
         actor_loss.backward()
         self.actor_optimizer.step()
 ```
-
-
 
 
 ## on policy vs off policy
