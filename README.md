@@ -201,7 +201,7 @@ First, we get the next states from the stored experiences
 
 Using these next_states we ask the actor network to predict the next actions
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.PNG "Actor")
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.png "Actor")
 
  
 ```Python
@@ -212,8 +212,8 @@ Using these next_states we ask the actor network to predict the next actions
 
 Then we use these next actions to get the predicted Q targets using the Critic network 
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/HalfCritic.PNG "Half Critic")
- 
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/HalfCritic.png "Half Critic")
+
 ```Python       
         Q_targets_next = self.critic_target(next_states, actions_next)
 ```
@@ -228,7 +228,7 @@ Using the rewards and the dones from the experiences that came out of the replay
  
 Then we check if we get the same Q values,  if we just add the states and actions to the local Critic network. 
 
-![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FullCritic.PNG "Full Critic")
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/FullCritic.png "Full Critic")
 
 ```Python        
         # Compute critic loss
@@ -248,7 +248,7 @@ When the Critic network is getting better at producing the Q values (using given
 
 At this point we can use the Critic’s learned states, actions to Q values relationship to train the Actor. We use the states from the replay memory as input for the Actor network to find the best action
  
-[actor image] 
+![alt text](https://github.com/fuzzballb/UdacityDDPGProject2/blob/master/images/Actor.png "Actor")
  
 ```Python
         # ---------------------------- update actor ---------------------------- #
