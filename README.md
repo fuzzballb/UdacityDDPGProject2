@@ -137,7 +137,7 @@ agent = Agent(state_size=33, action_size=4, random_seed=2)
 
 **2. This sets the state and action size for the agent and creates an Actor, and a Critic neural net, with corresponding target network.** 
 
-*ddpg_agent.ipynb*
+*ddpg_agent.py*
 
 ```Python
         # Actor Network (w/ Target Network)
@@ -156,7 +156,7 @@ DDPG is a algorithm that requires a actor and critic network. Both of these netw
 
 **3. Adding noise to increase exploration instead of only exploiting the paths that have lead to success**
 
-*ddpg_agent.ipynb*
+*ddpg_agent.py*
 
 ```Python
         # Noise process
@@ -168,7 +168,7 @@ Here we define noise that will be added to the action that is obtained from the 
 
 **4. Replay buffer, to store past experiences**
 
-*ddpg_agent.ipynb*
+*ddpg_agent.py*
 
 ```Python
         # Replay memory
@@ -187,8 +187,9 @@ for a more detailed explanation see the video below
 [![Youtube lecture about DDPG](https://img.youtube.com/vi/_pbd6TCjmaw/0.jpg)](https://www.youtube.com/watch?v=_pbd6TCjmaw&t=454). 
 
 
-
 First, we get the next states from the stored experiences 
+
+*ddpg_agent.py*
 
 ```Python
         states, actions, rewards, next_states, dones = experiences
